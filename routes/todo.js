@@ -1,16 +1,28 @@
 var express = require("express");
 var router = express.Router();
+var mysql = require("mysql");
+
+// 設定情報
+var mySqlConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: "test"
+};
 
 router.get("/", function(req, res, next) {
-  // よくある連想配列
-  const todoList = [
-    { title: "Node.js", content: "Express" },
-    { title: "PHP", content: "Laravel" },
-    { title: "Python", content: "Django" }
-  ];
+  // コネクションの用意
+  var connection = mysql.createConnection(mySqlConfig);
 
-  // 配列をJsonで返す
-  res.json(todoList);
+  connection.connect();
+
+  connection.query("SELECT todo FROM todos", (error, results, fields) => {
+    if (error == null) {
+      res.json(results);
+    }
+  });
+
+  connection.end();
 });
 
 module.exports = router;

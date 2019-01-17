@@ -9,6 +9,8 @@
 ```bash
 $ git clone https://github.com/JM8KRG/hello-express.git
 $ cd hello-express
+$ cp .env.example .env
+$ vi .env (set your db)
 $ npm install
 $ npm start
 ```
